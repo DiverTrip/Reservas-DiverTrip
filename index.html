@@ -1,492 +1,1458 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#071f3d">
-  <title>Reservas DiverTrip</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%23071f3d'/><path d='M13 23h38v16c-6 7-13 7-19 1-6 6-13 6-19-1z' fill='%232fd5c4'/><circle cx='23' cy='31' r='6' fill='white'/><circle cx='41' cy='31' r='6' fill='white'/></svg>">
+  <meta name="theme-color" content="#ffffff">
+  <title>Reservas | DiverTrip</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='32' fill='%23063859'/><path d='M13 24h38v15c-5 7-13 7-19 1-6 6-14 6-19-1z' fill='%2323beb5'/><circle cx='23' cy='31' r='6' fill='white'/><circle cx='41' cy='31' r='6' fill='white'/></svg>">
+
   <style>
-    :root{
-      --navy:#061a33;--deep:#0a315b;--blue:#0c4774;
-      --aqua:#24cbbb;--aqua2:#7fe8dc;--white:#fff;
-      --ink:#10243a;--muted:#64778a;--line:#d9e6ec;--bg:#eef8f8;
-      --shadow:0 18px 55px rgba(2,31,55,.13);
+    :root {
+      --navy: #063859;
+      --navy-dark: #042b45;
+      --turquoise: #20bdb5;
+      --turquoise-light: #eaf8f7;
+      --text: #263a47;
+      --muted: #71808a;
+      --line: #dbe3e7;
+      --background: #f4f6f7;
+      --white: #ffffff;
+      --error: #bd3f4d;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      color:var(--ink);background:
-      radial-gradient(circle at 10% 0%,rgba(36,203,187,.2),transparent 35%),
-      linear-gradient(160deg,#f5ffff 0%,#eaf6f8 100%);
-      min-height:100vh;
+
+    * {
+      box-sizing: border-box;
     }
-    header{
-      background:linear-gradient(135deg,var(--navy),var(--deep));
-      color:white;padding:22px 20px 34px;
+
+    html {
+      background: var(--background);
     }
-    .top{max-width:720px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:45px;height:45px;border:2px solid var(--aqua2);border-radius:14px;
-      display:grid;place-items:center;color:var(--aqua2);font-size:24px
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.45;
     }
-    .brand strong{display:block;font-size:19px}
-    .brand small{opacity:.78}
-    .languages{display:flex;gap:5px;background:rgba(255,255,255,.1);padding:4px;border-radius:12px}
-    .lang{
-      border:0;background:transparent;color:white;padding:8px 9px;border-radius:8px;
-      font-weight:800;cursor:pointer
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
     }
-    .lang.active{background:var(--aqua);color:var(--navy)}
-    main{max-width:720px;margin:-18px auto 40px;padding:0 14px}
-    .card{background:white;border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
-    .progress-wrap{padding:22px 22px 10px}
-    .progress-meta{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--muted)}
-    .track{height:8px;background:#dceced;border-radius:99px;margin-top:10px;overflow:hidden}
-    .bar{height:100%;width:25%;background:linear-gradient(90deg,var(--aqua),#19a7c2);transition:.3s}
-    form{padding:14px 22px 24px}
-    .step{display:none;animation:fade .25s ease}
-    .step.active{display:block}
-    @keyframes fade{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:none}}
-    h1{font-size:27px;line-height:1.15;margin:8px 0}
-    .subtitle{color:var(--muted);margin:0 0 22px;line-height:1.5}
-    label.field{display:block;margin:16px 0 7px;font-weight:750}
-    input,select,textarea{
-      width:100%;min-height:54px;border:1.5px solid var(--line);border-radius:14px;
-      padding:13px 14px;font:inherit;color:var(--ink);background:white;outline:none
+
+    .app {
+      width: min(100%, 570px);
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--white);
+      border-left: 1px solid #e9eef0;
+      border-right: 1px solid #e9eef0;
     }
-    input:focus,select:focus,textarea:focus{border-color:var(--aqua);box-shadow:0 0 0 4px rgba(36,203,187,.13)}
-    textarea{min-height:100px;resize:vertical}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .services{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-    .service{position:relative}
-    .service input{position:absolute;opacity:0}
-    .service label{
-      min-height:92px;border:1.5px solid var(--line);border-radius:16px;padding:14px;
-      display:flex;flex-direction:column;gap:7px;cursor:pointer;font-weight:750
+
+    .header {
+      padding: 21px 23px 17px;
+      border-bottom: 1px solid #e8edef;
+      background: var(--white);
     }
-    .service span:first-child{font-size:24px}
-    .service input:checked+label{border-color:var(--aqua);background:#ebfffc;box-shadow:0 0 0 3px rgba(36,203,187,.12)}
-    .conditional{margin-top:15px;padding:15px;border-radius:16px;background:#f2fafa}
-    .conditional[hidden]{display:none}
-    .notice{padding:14px;border-left:4px solid var(--aqua);background:#effcfb;border-radius:10px;color:#31546a;font-size:14px}
-    .actions{display:flex;gap:10px;margin-top:25px}
-    button.action{
-      flex:1;min-height:54px;border:0;border-radius:14px;font-weight:850;font-size:16px;cursor:pointer
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
     }
-    .next,.send{background:linear-gradient(135deg,var(--aqua),#18aebe);color:var(--navy)}
-    .back{background:#edf3f5;color:var(--ink)}
-    .review{background:#f5fafa;border-radius:16px;padding:15px;line-height:1.65}
-    .review b{color:var(--deep)}
-    .check{display:flex;align-items:flex-start;gap:10px;margin-top:17px;color:var(--muted);font-size:14px}
-    .check input{width:21px;min-height:21px;margin:0;flex:0 0 auto}
-    footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
-    @media(max-width:560px){
-      header{padding:17px 14px 30px}.brand small{display:none}
-      main{padding:0 9px}.card{border-radius:20px}
-      form,.progress-wrap{padding-left:16px;padding-right:16px}
-      .grid,.services{grid-template-columns:1fr}
-      h1{font-size:24px}
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--navy-dark);
+      font-size: 20px;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .mark {
+      position: relative;
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--navy);
+    }
+
+    .mark::before {
+      width: 21px;
+      height: 12px;
+      border: 2px solid var(--turquoise);
+      border-radius: 4px 4px 8px 8px;
+      content: "";
+    }
+
+    .mark::after {
+      position: absolute;
+      bottom: 5px;
+      width: 4px;
+      height: 7px;
+      border-radius: 3px;
+      background: var(--turquoise);
+      content: "";
+    }
+
+    .languages {
+      display: flex;
+      gap: 2px;
+      padding: 2px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .language-button {
+      padding: 6px 8px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .language-button.active {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .progress-area {
+      padding: 15px 23px 0;
+    }
+
+    .progress-track {
+      height: 3px;
+      overflow: hidden;
+      background: #e4eaed;
+    }
+
+    .progress-bar {
+      width: 20%;
+      height: 100%;
+      background: var(--turquoise);
+      transition: width 0.25s ease;
+    }
+
+    .progress-information {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      color: #87949c;
+      font-size: 12px;
+    }
+
+    main {
+      padding: 25px 23px 105px;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+      animation: enter 0.2s ease;
+    }
+
+    @keyframes enter {
+      from {
+        opacity: 0.25;
+        transform: translateX(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--turquoise);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--navy-dark);
+      font-size: 23px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.23;
+    }
+
+    .description {
+      margin: 8px 0 23px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .options {
+      display: grid;
+      gap: 8px;
+    }
+
+    .option {
+      position: relative;
+    }
+
+    .option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .option label {
+      display: flex;
+      min-height: 56px;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .option label:hover {
+      border-color: #a9c3cd;
+    }
+
+    .option input:checked + label {
+      border-color: var(--turquoise);
+      background: var(--turquoise-light);
+      box-shadow: inset 3px 0 var(--turquoise);
+    }
+
+    .radio {
+      display: grid;
+      width: 18px;
+      height: 18px;
+      flex: none;
+      place-items: center;
+      border: 1.5px solid #aab7be;
+      border-radius: 50%;
+    }
+
+    .option input:checked + label .radio {
+      border-color: var(--turquoise);
+    }
+
+    .option input:checked + label .radio::after {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--turquoise);
+      content: "";
+    }
+
+    .option-title {
+      display: block;
+      color: var(--navy-dark);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .option-description {
+      display: block;
+      margin-top: 1px;
+      color: #819099;
+      font-size: 12px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: #344b58;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .required {
+      color: var(--turquoise);
+    }
+
+    input,
+    select,
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 47px;
+      padding: 10px 12px;
+      border: 1px solid #ced9de;
+      border-radius: 7px;
+      outline: none;
+      background: var(--white);
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 86px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--turquoise);
+      box-shadow: 0 0 0 3px rgba(32, 189, 181, 0.11);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #a1abb1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .conditional[hidden] {
+      display: none;
+    }
+
+    .information {
+      margin: 3px 0 17px;
+      padding: 11px 12px;
+      border-left: 3px solid var(--turquoise);
+      background: #f0f9f8;
+      color: #5b717c;
+      font-size: 12px;
+    }
+
+    .error {
+      display: none;
+      margin-bottom: 15px;
+      padding: 10px 11px;
+      border-radius: 7px;
+      background: #fff0f1;
+      color: var(--error);
+      font-size: 12px;
+    }
+
+    .error.visible {
+      display: block;
+    }
+
+    .review {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .review-row {
+      display: grid;
+      grid-template-columns: 138px 1fr;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #e8edef;
+      font-size: 13px;
+    }
+
+    .review-row:last-child {
+      border-bottom: 0;
+    }
+
+    .review-key {
+      color: #788891;
+    }
+
+    .review-value {
+      color: var(--navy-dark);
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 16px;
+      color: #687b85;
+      font-size: 12px;
+    }
+
+    .consent input {
+      width: 17px;
+      min-height: 17px;
+      flex: none;
+      margin: 1px 0 0;
+      accent-color: var(--turquoise);
+    }
+
+    .whatsapp-note {
+      margin-top: 13px;
+      color: #7c8b93;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .actions {
+      position: fixed;
+      z-index: 10;
+      bottom: 0;
+      left: 50%;
+      display: flex;
+      width: min(100%, 568px);
+      gap: 9px;
+      padding: 13px 23px calc(13px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      border-top: 1px solid #e2e8eb;
+      background: rgba(255, 255, 255, 0.97);
+    }
+
+    .action {
+      min-height: 48px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      flex: 1;
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .primary:active {
+      background: var(--navy-dark);
+    }
+
+    .secondary {
+      border-color: #ced9de;
+      background: var(--white);
+      color: #687b85;
+    }
+
+    @media (max-width: 500px) {
+      .app {
+        border: 0;
+      }
+
+      .header {
+        padding: 17px 18px 14px;
+      }
+
+      .progress-area {
+        padding: 13px 18px 0;
+      }
+
+      main {
+        padding: 22px 18px 105px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .actions {
+        padding-right: 18px;
+        padding-left: 18px;
+      }
+
+      .review-row {
+        grid-template-columns: 105px 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
-<header>
-  <div class="top">
-    <div class="brand">
-      <div class="logo">◉</div>
-      <div><strong>DiverTrip</strong><small id="brandSub">Arraial do Cabo</small></div>
-    </div>
-    <div class="languages" aria-label="Idioma">
-      <button class="lang active" type="button" data-lang="pt">PT</button>
-      <button class="lang" type="button" data-lang="es">ES</button>
-      <button class="lang" type="button" data-lang="en">EN</button>
-    </div>
-  </div>
-</header>
+  <div class="app">
+    <header class="header">
+      <div class="header-row">
+        <div class="brand">
+          <span class="mark" aria-hidden="true"></span>
+          <span>DiverTrip</span>
+        </div>
 
-<main>
-  <div class="card">
-    <div class="progress-wrap">
-      <div class="progress-meta">
-        <span id="stepText">Etapa 1 de 4</span>
-        <span id="progressText">25%</span>
+        <div class="languages" aria-label="Idioma">
+          <button type="button" class="language-button active" data-language="pt">PT</button>
+          <button type="button" class="language-button" data-language="es">ES</button>
+          <button type="button" class="language-button" data-language="en">EN</button>
+        </div>
       </div>
-      <div class="track"><div class="bar" id="bar"></div></div>
+    </header>
+
+    <div class="progress-area">
+      <div class="progress-track">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="progress-information">
+        <span id="progressLabel">Etapa 1 de 5</span>
+        <span id="progressPercentage">20%</span>
+      </div>
     </div>
 
-    <form id="bookingForm">
-      <section class="step active" data-step="1">
-        <h1 data-t="title1">Qual experiência você procura?</h1>
-        <p class="subtitle" data-t="sub1">Escolha uma opção para personalizarmos sua solicitação.</p>
+    <main>
+      <form id="reservationForm" novalidate>
+        <div class="error" id="errorMessage"></div>
 
-        <div class="services">
-          <div class="service">
-            <input required type="radio" name="service" id="snorkel" value="Snorkel com tartarugas">
-            <label for="snorkel"><span>🐢</span><span data-t="snorkel">Snorkel com tartarugas</span></label>
-          </div>
-          <div class="service">
-            <input type="radio" name="service" id="discovery" value="Mergulho de batismo">
-            <label for="discovery"><span>🤿</span><span data-t="discovery">Mergulho de batismo</span></label>
-          </div>
-          <div class="service">
-            <input type="radio" name="service" id="certified" value="Mergulho credenciado">
-            <label for="certified"><span>🌊</span><span data-t="certified">Mergulho credenciado</span></label>
-          </div>
-          <div class="service">
-            <input type="radio" name="service" id="boat" value="Passeio de barco">
-            <label for="boat"><span>⛵</span><span data-t="boat">Passeio de barco</span></label>
-          </div>
-          <div class="service">
-            <input type="radio" name="service" id="quad" value="Passeio de quadriciclo">
-            <label for="quad"><span>🏝️</span><span data-t="quad">Passeio de quadriciclo</span></label>
-          </div>
-          <div class="service">
-            <input type="radio" name="service" id="buggy" value="Passeio de buggy">
-            <label for="buggy"><span>☀️</span><span data-t="buggy">Passeio de buggy</span></label>
-          </div>
-          <div class="service">
-            <input type="radio" name="service" id="course" value="Curso de mergulho">
-            <label for="course"><span>🎓</span><span data-t="course">Curso de mergulho</span></label>
-          </div>
-          <div class="service">
-            <input type="radio" name="service" id="package" value="Pacote de experiências">
-            <label for="package"><span>✨</span><span data-t="package">Pacote de experiências</span></label>
-          </div>
-        </div>
+        <section class="step active" data-step="1">
+          <p class="eyebrow" data-translate="request">Solicitação de reserva</p>
+          <h1 data-translate="chooseActivity">Qual experiência você gostaria de realizar?</h1>
+          <p class="description" data-translate="chooseActivityDescription">
+            Selecione uma atividade para personalizarmos as próximas perguntas.
+          </p>
 
-        <div class="actions">
-          <button type="button" class="action next" data-next data-t="continue">Continuar</button>
-        </div>
-      </section>
+          <div class="options">
+            <div class="option">
+              <input required type="radio" name="service" id="snorkel" value="snorkel">
+              <label for="snorkel">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="snorkel">Snorkel com tartarugas</span>
+                  <span class="option-description" data-translate="snorkelDescription">Experiência guiada na Graçainha</span>
+                </span>
+              </label>
+            </div>
 
-      <section class="step" data-step="2">
-        <h1 data-t="title2">Detalhes da experiência</h1>
-        <p class="subtitle" data-t="sub2">Informe a data desejada e os participantes.</p>
+            <div class="option">
+              <input type="radio" name="service" id="discovery" value="discovery">
+              <label for="discovery">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="discovery">Mergulho de batismo</span>
+                  <span class="option-description" data-translate="discoveryDescription">Primeiro mergulho com cilindro</span>
+                </span>
+              </label>
+            </div>
 
-        <div class="grid">
-          <div>
-            <label class="field" for="date" data-t="date">Data desejada</label>
+            <div class="option">
+              <input type="radio" name="service" id="certified" value="certified">
+              <label for="certified">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="certified">Mergulho credenciado</span>
+                  <span class="option-description" data-translate="certifiedDescription">Arraial do Cabo ou Ilha de Âncora</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="option">
+              <input type="radio" name="service" id="boat" value="boat">
+              <label for="boat">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="boat">Passeio de barco</span>
+                  <span class="option-description" data-translate="boatDescription">Tour paradisíaco por Arraial do Cabo</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="option">
+              <input type="radio" name="service" id="quad" value="quad">
+              <label for="quad">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="quad">Passeio de quadriciclo</span>
+                  <span class="option-description" data-translate="quadDescription">Roteiro guiado de duas horas</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="option">
+              <input type="radio" name="service" id="buggy" value="buggy">
+              <label for="buggy">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="buggy">Passeio de buggy</span>
+                  <span class="option-description" data-translate="buggyDescription">Passeio privativo para até quatro pessoas</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="option">
+              <input type="radio" name="service" id="course" value="course">
+              <label for="course">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="course">Curso de mergulho</span>
+                  <span class="option-description" data-translate="courseDescription">Formação e educação continuada</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="option">
+              <input type="radio" name="service" id="package" value="package">
+              <label for="package">
+                <span class="radio"></span>
+                <span>
+                  <span class="option-title" data-translate="package">Montar um pacote</span>
+                  <span class="option-description" data-translate="packageDescription">Combine duas ou mais experiências</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-step="2">
+          <p class="eyebrow" data-translate="availability">Disponibilidade</p>
+          <h1 data-translate="when">Quando vocês pretendem vir?</h1>
+          <p class="description" data-translate="whenDescription">
+            A data será confirmada pela nossa equipe.
+          </p>
+
+          <div class="field">
+            <label for="date">
+              <span data-translate="date">Data desejada</span>
+              <span class="required">*</span>
+            </label>
             <input required type="date" id="date" name="date">
           </div>
-          <div>
-            <label class="field" for="people" data-t="people">Participantes</label>
-            <input required type="number" min="1" max="30" id="people" name="people" placeholder="1">
-          </div>
-        </div>
 
-        <div class="conditional" id="certifiedFields" hidden>
-          <label class="field" for="certification" data-t="certification">Certificação</label>
-          <input id="certification" name="certification" placeholder="Ex.: PADI Open Water">
           <div class="grid">
-            <div>
-              <label class="field" for="dives" data-t="dives">Número de mergulhos</label>
-              <input type="number" min="0" id="dives" name="dives">
+            <div class="field">
+              <label for="adults">
+                <span data-translate="adults">Adultos</span>
+                <span class="required">*</span>
+              </label>
+              <input required type="number" id="adults" name="adults" min="0" max="30" value="1">
             </div>
-            <div>
-              <label class="field" for="lastDive" data-t="lastDive">Data do último mergulho</label>
-              <input type="text" id="lastDive" name="lastDive" placeholder="Ex.: agosto de 2026">
+
+            <div class="field">
+              <label for="children" data-translate="children">Crianças</label>
+              <input type="number" id="children" name="children" min="0" max="20" value="0">
             </div>
           </div>
-        </div>
 
-        <div class="conditional" id="beginnerFields" hidden>
-          <label class="field" for="swimming" data-t="swimming">Sabe nadar?</label>
-          <select id="swimming" name="swimming">
-            <option value="" data-t="select">Selecione</option>
-            <option value="Sim" data-t="yes">Sim</option>
-            <option value="Não" data-t="no">Não</option>
-            <option value="Pouco" data-t="little">Pouco</option>
-          </select>
-          <label class="field" for="health" data-t="health">Possui alguma condição de saúde?</label>
-          <textarea id="health" name="health" data-ph="healthPh" placeholder="Descreva ou informe “não”."></textarea>
-        </div>
-
-        <div class="conditional" id="quadFields" hidden>
-          <label class="field" for="drivers" data-t="drivers">Quantas pessoas possuem habilitação?</label>
-          <input type="number" min="0" id="drivers" name="drivers">
-          <label class="field" for="children" data-t="children">Há crianças? Informe as idades</label>
-          <input id="children" name="children" data-ph="childrenPh" placeholder="Ex.: 7 e 10 anos">
-        </div>
-
-        <div class="conditional" id="courseFields" hidden>
-          <label class="field" for="courseType" data-t="courseType">Curso de interesse</label>
-          <select id="courseType" name="courseType">
-            <option value="" data-t="select">Selecione</option>
-            <option>Open Water Diver</option>
-            <option>Advanced Open Water</option>
-            <option>Rescue Diver</option>
-            <option>Divemaster</option>
-            <option>Skin Diver / Snorkel Advanced</option>
-          </select>
-        </div>
-
-        <label class="field" for="notes" data-t="notes">Observações ou preferências</label>
-        <textarea id="notes" name="notes" data-ph="notesPh" placeholder="Horário, necessidades específicas ou outras informações."></textarea>
-
-        <div class="actions">
-          <button type="button" class="action back" data-back data-t="back">Voltar</button>
-          <button type="button" class="action next" data-next data-t="continue">Continuar</button>
-        </div>
-      </section>
-
-      <section class="step" data-step="3">
-        <h1 data-t="title3">Seus dados</h1>
-        <p class="subtitle" data-t="sub3">Usaremos estes dados somente para atender sua solicitação.</p>
-
-        <label class="field" for="name" data-t="name">Nome completo</label>
-        <input required id="name" name="name" autocomplete="name">
-
-        <div class="grid">
-          <div>
-            <label class="field" for="phone" data-t="phone">WhatsApp</label>
-            <input required type="tel" id="phone" name="phone" placeholder="+55 22...">
+          <div class="field">
+            <label for="childAges" data-translate="childAges">Idade das crianças, se houver</label>
+            <input id="childAges" name="childAges" data-placeholder="childAgesPlaceholder" placeholder="Ex.: 7 e 10 anos">
           </div>
-          <div>
-            <label class="field" for="country" data-t="country">País</label>
-            <input required id="country" name="country" data-ph="countryPh" placeholder="Brasil">
+        </section>
+
+        <section class="step" data-step="3">
+          <p class="eyebrow" data-translate="experienceProfile">Perfil da experiência</p>
+          <h1 data-translate="tellUsMore">Conte-nos um pouco mais</h1>
+          <p class="description" data-translate="adaptiveDescription">
+            Mostramos somente as perguntas necessárias para a atividade escolhida.
+          </p>
+
+          <div class="conditional" data-service="snorkel discovery" hidden>
+            <div class="field">
+              <label for="swimming" data-translate="swimming">Como você se sente na água?</label>
+              <select id="swimming" name="swimming">
+                <option value="" data-translate="select">Selecione</option>
+                <option value="Confortável" data-translate="comfortable">Confortável</option>
+                <option value="Nada um pouco" data-translate="swimsLittle">Sei nadar um pouco</option>
+                <option value="Não sabe nadar" data-translate="cannotSwim">Não sei nadar</option>
+                <option value="Medo do mar" data-translate="afraid">Tenho medo do mar</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <label class="field" for="email" data-t="email">E-mail (opcional)</label>
-        <input type="email" id="email" name="email" autocomplete="email">
+          <div class="conditional" data-service="discovery" hidden>
+            <div class="field">
+              <label for="health" data-translate="health">
+                Algum participante possui condição de saúde relevante?
+              </label>
+              <textarea id="health" name="health" data-placeholder="healthPlaceholder" placeholder="Informe condições médicas, medicamentos ou escreva “não”."></textarea>
+            </div>
 
-        <label class="field" for="lodging" data-t="lodging">Hospedagem ou bairro em Arraial (opcional)</label>
-        <input id="lodging" name="lodging">
+            <div class="information" data-translate="medicalInformation">
+              Dependendo da resposta, nossa equipe poderá solicitar avaliação médica antes de confirmar o mergulho.
+            </div>
+          </div>
 
-        <div class="notice" data-t="notice">
-          Esta é uma solicitação. A reserva será confirmada pela equipe após a verificação de disponibilidade.
-        </div>
+          <div class="conditional" data-service="certified" hidden>
+            <div class="field">
+              <label for="destination" data-translate="destination">Destino de interesse</label>
+              <select id="destination" name="destination">
+                <option value="" data-translate="select">Selecione</option>
+                <option value="Arraial do Cabo — Ilha dos Porcos">Arraial do Cabo — Ilha dos Porcos</option>
+                <option value="Búzios — Ilha de Âncora">Búzios — Ilha de Âncora</option>
+                <option value="Arraial e Búzios" data-translate="bothDestinations">Os dois destinos</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="certification" data-translate="certification">Certificação e certificadora</label>
+              <input id="certification" name="certification" placeholder="Ex.: PADI Advanced Open Water">
+            </div>
+
+            <div class="grid">
+              <div class="field">
+                <label for="dives" data-translate="dives">Total de mergulhos</label>
+                <input type="number" id="dives" name="dives" min="0">
+              </div>
+
+              <div class="field">
+                <label for="lastDive" data-translate="lastDive">Último mergulho</label>
+                <input id="lastDive" name="lastDive" data-placeholder="lastDivePlaceholder" placeholder="Mês e ano">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="ownEquipment" data-translate="ownEquipment">Possui equipamento próprio?</label>
+              <input id="ownEquipment" name="ownEquipment" data-placeholder="equipmentPlaceholder" placeholder="Informe quais peças">
+            </div>
+          </div>
+
+          <div class="conditional" data-service="quad" hidden>
+            <div class="field">
+              <label for="drivers" data-translate="drivers">Quantos participantes possuem CNH válida?</label>
+              <input type="number" id="drivers" name="drivers" min="0">
+            </div>
+          </div>
+
+          <div class="conditional" data-service="buggy" hidden>
+            <div class="field">
+              <label for="route" data-translate="route">Roteiro de interesse</label>
+              <select id="route" name="route">
+                <option value="" data-translate="select">Selecione</option>
+                <option value="Tradicional — 2 horas">Tradicional — 2 horas</option>
+                <option value="Arubinha — 4 horas">Arubinha — 4 horas</option>
+                <option value="Ainda não decidiu" data-translate="undecided">Ainda não decidi</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="conditional" data-service="course" hidden>
+            <div class="field">
+              <label for="courseType" data-translate="courseType">Qual curso procura?</label>
+              <select id="courseType" name="courseType">
+                <option value="" data-translate="select">Selecione</option>
+                <option>Open Water Diver</option>
+                <option>Advanced Open Water Diver</option>
+                <option>Rescue Diver</option>
+                <option>Divemaster</option>
+                <option>Skin Diver / Snorkel Advanced</option>
+                <option value="Precisa de orientação" data-translate="needsGuidance">Preciso de orientação</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="currentCertification" data-translate="currentCertification">
+                Certificação atual, se possuir
+              </label>
+              <input id="currentCertification" name="currentCertification">
+            </div>
+          </div>
+
+          <div class="conditional" data-service="boat package" hidden>
+            <div class="field">
+              <label for="interests" data-translate="interests">Conte quais experiências deseja incluir</label>
+              <textarea id="interests" name="interests" data-placeholder="interestsPlaceholder" placeholder="Ex.: passeio de barco, snorkel e quadriciclo"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-step="4">
+          <p class="eyebrow" data-translate="contact">Contato</p>
+          <h1 data-translate="contactTitle">Como podemos falar com você?</h1>
+          <p class="description" data-translate="contactDescription">
+            Preencha os dados do responsável pela solicitação.
+          </p>
+
+          <div class="field">
+            <label for="name">
+              <span data-translate="name">Nome completo</span>
+              <span class="required">*</span>
+            </label>
+            <input required id="name" name="name" autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="phone">
+              <span data-translate="phone">WhatsApp com código do país</span>
+              <span class="required">*</span>
+            </label>
+            <input required type="tel" id="phone" name="phone" placeholder="+55 22 99999-9999">
+          </div>
+
+          <div class="grid">
+            <div class="field">
+              <label for="country">
+                <span data-translate="country">País</span>
+                <span class="required">*</span>
+              </label>
+              <input required id="country" name="country" data-placeholder="countryPlaceholder" placeholder="Brasil">
+            </div>
+
+            <div class="field">
+              <label for="serviceLanguage" data-translate="serviceLanguage">Idioma de atendimento</label>
+              <select id="serviceLanguage" name="serviceLanguage">
+                <option>Português</option>
+                <option>Español</option>
+                <option>English</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email" data-translate="email">E-mail (opcional)</label>
+            <input type="email" id="email" name="email" autocomplete="email">
+          </div>
+
+          <div class="field">
+            <label for="lodging" data-translate="lodging">Hospedagem ou bairro (opcional)</label>
+            <input id="lodging" name="lodging">
+          </div>
+        </section>
+
+        <section class="step" data-step="5">
+          <p class="eyebrow" data-translate="summary">Resumo</p>
+          <h1 data-translate="reviewTitle">Revise sua solicitação</h1>
+          <p class="description" data-translate="reviewDescription">
+            A reserva será confirmada após verificarmos a disponibilidade.
+          </p>
+
+          <div class="review" id="review"></div>
+
+          <div class="field" style="margin-top: 17px">
+            <label for="notes" data-translate="notes">Observações adicionais</label>
+            <textarea id="notes" name="notes" data-placeholder="notesPlaceholder" placeholder="Horário preferido, necessidades específicas ou dúvidas"></textarea>
+          </div>
+
+          <label class="consent">
+            <input required type="checkbox" id="consent">
+            <span data-translate="consent">
+              Confirmo que os dados estão corretos e autorizo o contato da DiverTrip.
+            </span>
+          </label>
+
+          <p class="whatsapp-note" data-translate="whatsappNote">
+            Ao continuar, sua solicitação será enviada pelo WhatsApp.
+          </p>
+        </section>
 
         <div class="actions">
-          <button type="button" class="action back" data-back data-t="back">Voltar</button>
-          <button type="button" class="action next" data-next data-t="review">Revisar</button>
+          <button type="button" class="action secondary" id="backButton" hidden data-translate="back">Voltar</button>
+          <button type="button" class="action primary" id="nextButton" data-translate="continue">Continuar</button>
         </div>
-      </section>
-
-      <section class="step" data-step="4">
-        <h1 data-t="title4">Revise sua solicitação</h1>
-        <p class="subtitle" data-t="sub4">Confira os dados antes de conversar com nossa equipe.</p>
-
-        <div class="review" id="reviewBox"></div>
-
-        <label class="check">
-          <input required type="checkbox" id="consent">
-          <span data-t="consent">Confirmo que os dados estão corretos e autorizo o contato da DiverTrip.</span>
-        </label>
-
-        <div class="actions">
-          <button type="button" class="action back" data-back data-t="back">Voltar</button>
-          <button type="submit" class="action send" data-t="send">Enviar pelo WhatsApp</button>
-        </div>
-      </section>
-    </form>
+      </form>
+    </main>
   </div>
 
-  <footer data-t="footer">DiverTrip • Arraial do Cabo, Rio de Janeiro</footer>
-</main>
+  <script>
+    const translations = {
+      pt: {
+        request: "Solicitação de reserva",
+        chooseActivity: "Qual experiência você gostaria de realizar?",
+        chooseActivityDescription: "Selecione uma atividade para personalizarmos as próximas perguntas.",
+        snorkel: "Snorkel com tartarugas",
+        snorkelDescription: "Experiência guiada na Graçainha",
+        discovery: "Mergulho de batismo",
+        discoveryDescription: "Primeiro mergulho com cilindro",
+        certified: "Mergulho credenciado",
+        certifiedDescription: "Arraial do Cabo ou Ilha de Âncora",
+        boat: "Passeio de barco",
+        boatDescription: "Tour paradisíaco por Arraial do Cabo",
+        quad: "Passeio de quadriciclo",
+        quadDescription: "Roteiro guiado de duas horas",
+        buggy: "Passeio de buggy",
+        buggyDescription: "Passeio privativo para até quatro pessoas",
+        course: "Curso de mergulho",
+        courseDescription: "Formação e educação continuada",
+        package: "Montar um pacote",
+        packageDescription: "Combine duas ou mais experiências",
+        availability: "Disponibilidade",
+        when: "Quando vocês pretendem vir?",
+        whenDescription: "A data será confirmada pela nossa equipe.",
+        date: "Data desejada",
+        adults: "Adultos",
+        children: "Crianças",
+        childAges: "Idade das crianças, se houver",
+        childAgesPlaceholder: "Ex.: 7 e 10 anos",
+        experienceProfile: "Perfil da experiência",
+        tellUsMore: "Conte-nos um pouco mais",
+        adaptiveDescription: "Mostramos somente as perguntas necessárias para a atividade escolhida.",
+        swimming: "Como você se sente na água?",
+        select: "Selecione",
+        comfortable: "Confortável",
+        swimsLittle: "Sei nadar um pouco",
+        cannotSwim: "Não sei nadar",
+        afraid: "Tenho medo do mar",
+        health: "Algum participante possui condição de saúde relevante?",
+        healthPlaceholder: "Informe condições médicas, medicamentos ou escreva “não”.",
+        medicalInformation: "Dependendo da resposta, nossa equipe poderá solicitar avaliação médica antes de confirmar o mergulho.",
+        destination: "Destino de interesse",
+        bothDestinations: "Os dois destinos",
+        certification: "Certificação e certificadora",
+        dives: "Total de mergulhos",
+        lastDive: "Último mergulho",
+        lastDivePlaceholder: "Mês e ano",
+        ownEquipment: "Possui equipamento próprio?",
+        equipmentPlaceholder: "Informe quais peças",
+        drivers: "Quantos participantes possuem CNH válida?",
+        route: "Roteiro de interesse",
+        undecided: "Ainda não decidi",
+        courseType: "Qual curso procura?",
+        currentCertification: "Certificação atual, se possuir",
+        needsGuidance: "Preciso de orientação",
+        interests: "Conte quais experiências deseja incluir",
+        interestsPlaceholder: "Ex.: passeio de barco, snorkel e quadriciclo",
+        contact: "Contato",
+        contactTitle: "Como podemos falar com você?",
+        contactDescription: "Preencha os dados do responsável pela solicitação.",
+        name: "Nome completo",
+        phone: "WhatsApp com código do país",
+        country: "País",
+        countryPlaceholder: "Brasil",
+        serviceLanguage: "Idioma de atendimento",
+        email: "E-mail (opcional)",
+        lodging: "Hospedagem ou bairro (opcional)",
+        summary: "Resumo",
+        reviewTitle: "Revise sua solicitação",
+        reviewDescription: "A reserva será confirmada após verificarmos a disponibilidade.",
+        notes: "Observações adicionais",
+        notesPlaceholder: "Horário preferido, necessidades específicas ou dúvidas",
+        consent: "Confirmo que os dados estão corretos e autorizo o contato da DiverTrip.",
+        whatsappNote: "Ao continuar, sua solicitação será enviada pelo WhatsApp.",
+        back: "Voltar",
+        continue: "Continuar",
+        send: "Enviar solicitação",
+        step: "Etapa",
+        of: "de",
+        error: "Preencha os campos obrigatórios para continuar.",
+        message: "Olá, DiverTrip! Gostaria de solicitar uma reserva."
+      },
 
-<script>
-  const translations = {
-    pt:{
-      title1:"Qual experiência você procura?",sub1:"Escolha uma opção para personalizarmos sua solicitação.",
-      snorkel:"Snorkel com tartarugas",discovery:"Mergulho de batismo",certified:"Mergulho credenciado",
-      boat:"Passeio de barco",quad:"Passeio de quadriciclo",buggy:"Passeio de buggy",
-      course:"Curso de mergulho",package:"Pacote de experiências",continue:"Continuar",back:"Voltar",
-      title2:"Detalhes da experiência",sub2:"Informe a data desejada e os participantes.",
-      date:"Data desejada",people:"Participantes",certification:"Certificação",dives:"Número de mergulhos",
-      lastDive:"Data do último mergulho",swimming:"Sabe nadar?",select:"Selecione",yes:"Sim",no:"Não",
-      little:"Pouco",health:"Possui alguma condição de saúde?",healthPh:"Descreva ou informe “não”.",
-      drivers:"Quantas pessoas possuem habilitação?",children:"Há crianças? Informe as idades",
-      childrenPh:"Ex.: 7 e 10 anos",courseType:"Curso de interesse",notes:"Observações ou preferências",
-      notesPh:"Horário, necessidades específicas ou outras informações.",
-      title3:"Seus dados",sub3:"Usaremos estes dados somente para atender sua solicitação.",
-      name:"Nome completo",phone:"WhatsApp",country:"País",countryPh:"Brasil",email:"E-mail (opcional)",
-      lodging:"Hospedagem ou bairro em Arraial (opcional)",review:"Revisar",
-      notice:"Esta é uma solicitação. A reserva será confirmada pela equipe após a verificação de disponibilidade.",
-      title4:"Revise sua solicitação",sub4:"Confira os dados antes de conversar com nossa equipe.",
-      consent:"Confirmo que os dados estão corretos e autorizo o contato da DiverTrip.",
-      send:"Enviar pelo WhatsApp",footer:"DiverTrip • Arraial do Cabo, Rio de Janeiro",
-      step:"Etapa",of:"de",required:"Preencha os campos obrigatórios para continuar.",
-      request:"Olá, DiverTrip! Gostaria de solicitar uma reserva."
-    },
-    es:{
-      title1:"¿Qué experiencia estás buscando?",sub1:"Elige una opción para personalizar tu solicitud.",
-      snorkel:"Snorkel con tortugas",discovery:"Bautismo de buceo",certified:"Buceo certificado",
-      boat:"Paseo en barco",quad:"Paseo en cuatriciclo",buggy:"Paseo en buggy",
-      course:"Curso de buceo",package:"Paquete de experiencias",continue:"Continuar",back:"Volver",
-      title2:"Detalles de la experiencia",sub2:"Indica la fecha deseada y los participantes.",
-      date:"Fecha deseada",people:"Participantes",certification:"Certificación",dives:"Número de inmersiones",
-      lastDive:"Fecha de la última inmersión",swimming:"¿Sabes nadar?",select:"Selecciona",yes:"Sí",no:"No",
-      little:"Un poco",health:"¿Tienes alguna condición de salud?",healthPh:"Descríbela o escribe “no”.",
-      drivers:"¿Cuántas personas tienen licencia de conducir?",children:"¿Hay niños? Indica sus edades",
-      childrenPh:"Ej.: 7 y 10 años",courseType:"Curso de interés",notes:"Observaciones o preferencias",
-      notesPh:"Horario, necesidades específicas u otra información.",
-      title3:"Tus datos",sub3:"Usaremos estos datos solamente para atender tu solicitud.",
-      name:"Nombre completo",phone:"WhatsApp",country:"País",countryPh:"Argentina",email:"E-mail (opcional)",
-      lodging:"Hospedaje o barrio en Arraial (opcional)",review:"Revisar",
-      notice:"Esta es una solicitud. El equipo confirmará la reserva después de verificar la disponibilidad.",
-      title4:"Revisa tu solicitud",sub4:"Comprueba los datos antes de hablar con nuestro equipo.",
-      consent:"Confirmo que los datos son correctos y autorizo el contacto de DiverTrip.",
-      send:"Enviar por WhatsApp",footer:"DiverTrip • Arraial do Cabo, Río de Janeiro",
-      step:"Paso",of:"de",required:"Completa los campos obligatorios para continuar.",
-      request:"¡Hola, DiverTrip! Quisiera solicitar una reserva."
-    },
-    en:{
-      title1:"Which experience are you looking for?",sub1:"Choose an option so we can personalize your request.",
-      snorkel:"Turtle snorkeling",discovery:"Discover Scuba Diving",certified:"Certified diving",
-      boat:"Boat tour",quad:"Quad bike tour",buggy:"Buggy tour",
-      course:"Diving course",package:"Experience package",continue:"Continue",back:"Back",
-      title2:"Experience details",sub2:"Tell us your preferred date and number of participants.",
-      date:"Preferred date",people:"Participants",certification:"Certification",dives:"Number of dives",
-      lastDive:"Date of your last dive",swimming:"Can you swim?",select:"Select",yes:"Yes",no:"No",
-      little:"A little",health:"Do you have any health condition?",healthPh:"Describe it or enter “no”.",
-      drivers:"How many people have a driver's license?",children:"Are there children? Enter their ages",
-      childrenPh:"Example: 7 and 10",courseType:"Course of interest",notes:"Notes or preferences",
-      notesPh:"Preferred time, specific needs or other information.",
-      title3:"Your details",sub3:"We will only use this information to assist with your request.",
-      name:"Full name",phone:"WhatsApp",country:"Country",countryPh:"United States",email:"Email (optional)",
-      lodging:"Accommodation or neighborhood in Arraial (optional)",review:"Review",
-      notice:"This is a request. Our team will confirm the booking after checking availability.",
-      title4:"Review your request",sub4:"Check your details before contacting our team.",
-      consent:"I confirm that the information is correct and authorize DiverTrip to contact me.",
-      send:"Send via WhatsApp",footer:"DiverTrip • Arraial do Cabo, Rio de Janeiro",
-      step:"Step",of:"of",required:"Complete the required fields to continue.",
-      request:"Hello, DiverTrip! I would like to request a booking."
-    }
-  };
+      es: {
+        request: "Solicitud de reserva",
+        chooseActivity: "¿Qué experiencia te gustaría realizar?",
+        chooseActivityDescription: "Selecciona una actividad para personalizar las próximas preguntas.",
+        snorkel: "Snorkel con tortugas",
+        snorkelDescription: "Experiencia guiada en Graçainha",
+        discovery: "Bautismo de buceo",
+        discoveryDescription: "Primera experiencia con equipo autónomo",
+        certified: "Buceo certificado",
+        certifiedDescription: "Arraial do Cabo o Ilha de Âncora",
+        boat: "Paseo en barco",
+        boatDescription: "Tour paradisíaco por Arraial do Cabo",
+        quad: "Paseo en cuatriciclo",
+        quadDescription: "Ruta guiada de dos horas",
+        buggy: "Paseo en buggy",
+        buggyDescription: "Paseo privado para hasta cuatro personas",
+        course: "Curso de buceo",
+        courseDescription: "Formación y educación continua",
+        package: "Armar un paquete",
+        packageDescription: "Combina dos o más experiencias",
+        availability: "Disponibilidad",
+        when: "¿Cuándo planean venir?",
+        whenDescription: "Nuestro equipo confirmará la fecha.",
+        date: "Fecha deseada",
+        adults: "Adultos",
+        children: "Niños",
+        childAges: "Edades de los niños, si los hay",
+        childAgesPlaceholder: "Ej.: 7 y 10 años",
+        experienceProfile: "Perfil de la experiencia",
+        tellUsMore: "Cuéntanos un poco más",
+        adaptiveDescription: "Mostramos solamente las preguntas necesarias para la actividad elegida.",
+        swimming: "¿Cómo te sientes en el agua?",
+        select: "Selecciona",
+        comfortable: "Cómodo",
+        swimsLittle: "Sé nadar un poco",
+        cannotSwim: "No sé nadar",
+        afraid: "Tengo miedo al mar",
+        health: "¿Algún participante tiene una condición de salud relevante?",
+        healthPlaceholder: "Indica condiciones médicas, medicamentos o escribe “no”.",
+        medicalInformation: "Dependiendo de la respuesta, podremos solicitar una evaluación médica.",
+        destination: "Destino de interés",
+        bothDestinations: "Ambos destinos",
+        certification: "Certificación y agencia",
+        dives: "Total de inmersiones",
+        lastDive: "Última inmersión",
+        lastDivePlaceholder: "Mes y año",
+        ownEquipment: "¿Tienes equipo propio?",
+        equipmentPlaceholder: "Indica qué piezas",
+        drivers: "¿Cuántos participantes tienen licencia válida?",
+        route: "Ruta de interés",
+        undecided: "Aún no lo decidí",
+        courseType: "¿Qué curso buscas?",
+        currentCertification: "Certificación actual, si tienes",
+        needsGuidance: "Necesito orientación",
+        interests: "Indica qué experiencias deseas incluir",
+        interestsPlaceholder: "Ej.: barco, snorkel y cuatriciclo",
+        contact: "Contacto",
+        contactTitle: "¿Cómo podemos contactarte?",
+        contactDescription: "Completa los datos del responsable de la solicitud.",
+        name: "Nombre completo",
+        phone: "WhatsApp con código de país",
+        country: "País",
+        countryPlaceholder: "Argentina",
+        serviceLanguage: "Idioma de atención",
+        email: "E-mail (opcional)",
+        lodging: "Hospedaje o barrio (opcional)",
+        summary: "Resumen",
+        reviewTitle: "Revisa tu solicitud",
+        reviewDescription: "Confirmaremos la reserva después de verificar disponibilidad.",
+        notes: "Observaciones adicionales",
+        notesPlaceholder: "Horario preferido, necesidades específicas o dudas",
+        consent: "Confirmo que los datos son correctos y autorizo el contacto de DiverTrip.",
+        whatsappNote: "Tu solicitud será enviada por WhatsApp.",
+        back: "Volver",
+        continue: "Continuar",
+        send: "Enviar solicitud",
+        step: "Paso",
+        of: "de",
+        error: "Completa los campos obligatorios para continuar.",
+        message: "¡Hola, DiverTrip! Quisiera solicitar una reserva."
+      },
 
-  let language = "pt";
-  let currentStep = 1;
-  const form = document.getElementById("bookingForm");
-  const steps = [...document.querySelectorAll(".step")];
-  const dateInput = document.getElementById("date");
-  dateInput.min = new Date().toISOString().split("T")[0];
+      en: {
+        request: "Booking request",
+        chooseActivity: "Which experience would you like to book?",
+        chooseActivityDescription: "Select an activity to personalize the next questions.",
+        snorkel: "Turtle snorkeling",
+        snorkelDescription: "Guided experience at Graçainha",
+        discovery: "Discover Scuba Diving",
+        discoveryDescription: "Your first scuba experience",
+        certified: "Certified diving",
+        certifiedDescription: "Arraial do Cabo or Ilha de Âncora",
+        boat: "Boat tour",
+        boatDescription: "Paradise tour around Arraial do Cabo",
+        quad: "Quad bike tour",
+        quadDescription: "Two-hour guided route",
+        buggy: "Buggy tour",
+        buggyDescription: "Private tour for up to four people",
+        course: "Diving course",
+        courseDescription: "Training and continuing education",
+        package: "Build a package",
+        packageDescription: "Combine two or more experiences",
+        availability: "Availability",
+        when: "When are you planning to visit?",
+        whenDescription: "Our team will confirm the date.",
+        date: "Preferred date",
+        adults: "Adults",
+        children: "Children",
+        childAges: "Children's ages, if any",
+        childAgesPlaceholder: "Example: 7 and 10",
+        experienceProfile: "Experience profile",
+        tellUsMore: "Tell us a little more",
+        adaptiveDescription: "We only show questions related to your selected activity.",
+        swimming: "How comfortable are you in the water?",
+        select: "Select",
+        comfortable: "Comfortable",
+        swimsLittle: "I can swim a little",
+        cannotSwim: "I cannot swim",
+        afraid: "I am afraid of the ocean",
+        health: "Does anyone have a relevant health condition?",
+        healthPlaceholder: "Enter medical conditions, medications or write “no”.",
+        medicalInformation: "Depending on your answer, medical clearance may be required.",
+        destination: "Preferred destination",
+        bothDestinations: "Both destinations",
+        certification: "Certification and agency",
+        dives: "Total dives",
+        lastDive: "Last dive",
+        lastDivePlaceholder: "Month and year",
+        ownEquipment: "Do you have your own equipment?",
+        equipmentPlaceholder: "List the items",
+        drivers: "How many participants have a valid driver's license?",
+        route: "Preferred route",
+        undecided: "I haven't decided yet",
+        courseType: "Which course are you looking for?",
+        currentCertification: "Current certification, if any",
+        needsGuidance: "I need guidance",
+        interests: "Tell us which experiences you want to include",
+        interestsPlaceholder: "Example: boat, snorkeling and quad bike",
+        contact: "Contact",
+        contactTitle: "How can we contact you?",
+        contactDescription: "Enter the details of the person making the request.",
+        name: "Full name",
+        phone: "WhatsApp with country code",
+        country: "Country",
+        countryPlaceholder: "United States",
+        serviceLanguage: "Service language",
+        email: "Email (optional)",
+        lodging: "Accommodation or neighborhood (optional)",
+        summary: "Summary",
+        reviewTitle: "Review your request",
+        reviewDescription: "We will confirm the booking after checking availability.",
+        notes: "Additional notes",
+        notesPlaceholder: "Preferred time, specific needs or questions",
+        consent: "I confirm the information is correct and authorize DiverTrip to contact me.",
+        whatsappNote: "Your request will be sent through WhatsApp.",
+        back: "Back",
+        continue: "Continue",
+        send: "Send request",
+        step: "Step",
+        of: "of",
+        error: "Complete the required fields to continue.",
+        message: "Hello, DiverTrip! I would like to request a booking."
+      }
+    };
 
-  function translate(){
-    const t = translations[language];
-    document.documentElement.lang = language === "pt" ? "pt-BR" : language;
-    document.querySelectorAll("[data-t]").forEach(el => {
-      const key = el.dataset.t;
-      if(t[key]) el.textContent = t[key];
-    });
-    document.querySelectorAll("[data-ph]").forEach(el => {
-      const key = el.dataset.ph;
-      if(t[key]) el.placeholder = t[key];
-    });
-    updateProgress();
-  }
+    const serviceNames = {
+      pt: {
+        snorkel: "Snorkel com tartarugas",
+        discovery: "Mergulho de batismo",
+        certified: "Mergulho credenciado",
+        boat: "Passeio de barco",
+        quad: "Passeio de quadriciclo",
+        buggy: "Passeio de buggy",
+        course: "Curso de mergulho",
+        package: "Pacote de experiências"
+      },
+      es: {
+        snorkel: "Snorkel con tortugas",
+        discovery: "Bautismo de buceo",
+        certified: "Buceo certificado",
+        boat: "Paseo en barco",
+        quad: "Paseo en cuatriciclo",
+        buggy: "Paseo en buggy",
+        course: "Curso de buceo",
+        package: "Paquete de experiencias"
+      },
+      en: {
+        snorkel: "Turtle snorkeling",
+        discovery: "Discover Scuba Diving",
+        certified: "Certified diving",
+        boat: "Boat tour",
+        quad: "Quad bike tour",
+        buggy: "Buggy tour",
+        course: "Diving course",
+        package: "Experience package"
+      }
+    };
 
-  document.querySelectorAll(".lang").forEach(btn => {
-    btn.addEventListener("click", () => {
-      language = btn.dataset.lang;
-      document.querySelectorAll(".lang").forEach(b => b.classList.toggle("active", b === btn));
-      translate();
-      if(currentStep === 4) buildReview();
-    });
-  });
+    const reviewLabels = {
+      pt: {
+        service: "Experiência",
+        date: "Data",
+        adults: "Adultos",
+        children: "Crianças",
+        childAges: "Idades",
+        swimming: "Conforto na água",
+        health: "Saúde",
+        destination: "Destino",
+        certification: "Certificação",
+        dives: "Mergulhos",
+        lastDive: "Último mergulho",
+        ownEquipment: "Equipamento próprio",
+        drivers: "Condutores com CNH",
+        route: "Roteiro",
+        courseType: "Curso",
+        currentCertification: "Certificação atual",
+        interests: "Experiências",
+        name: "Nome",
+        phone: "WhatsApp",
+        country: "País",
+        serviceLanguage: "Idioma",
+        email: "E-mail",
+        lodging: "Hospedagem",
+        notes: "Observações"
+      },
 
-  function updateProgress(){
-    const percentage = currentStep * 25;
-    document.getElementById("bar").style.width = percentage + "%";
-    document.getElementById("progressText").textContent = percentage + "%";
-    document.getElementById("stepText").textContent =
-      `${translations[language].step} ${currentStep} ${translations[language].of} 4`;
-  }
+      es: {
+        service: "Experiencia",
+        date: "Fecha",
+        adults: "Adultos",
+        children: "Niños",
+        childAges: "Edades",
+        swimming: "Comodidad en el agua",
+        health: "Salud",
+        destination: "Destino",
+        certification: "Certificación",
+        dives: "Inmersiones",
+        lastDive: "Última inmersión",
+        ownEquipment: "Equipo propio",
+        drivers: "Conductores con licencia",
+        route: "Ruta",
+        courseType: "Curso",
+        currentCertification: "Certificación actual",
+        interests: "Experiencias",
+        name: "Nombre",
+        phone: "WhatsApp",
+        country: "País",
+        serviceLanguage: "Idioma",
+        email: "E-mail",
+        lodging: "Hospedaje",
+        notes: "Observaciones"
+      },
 
-  function showStep(number){
-    currentStep = number;
-    steps.forEach(step => step.classList.toggle("active", Number(step.dataset.step) === number));
-    updateProgress();
-    if(number === 4) buildReview();
-    window.scrollTo({top:0, behavior:"smooth"});
-  }
+      en: {
+        service: "Experience",
+        date: "Date",
+        adults: "Adults",
+        children: "Children",
+        childAges: "Ages",
+        swimming: "Water confidence",
+        health: "Health",
+        destination: "Destination",
+        certification: "Certification",
+        dives: "Dives",
+        lastDive: "Last dive",
+        ownEquipment: "Own equipment",
+        drivers: "Licensed drivers",
+        route: "Route",
+        courseType: "Course",
+        currentCertification: "Current certification",
+        interests: "Experiences",
+        name: "Name",
+        phone: "WhatsApp",
+        country: "Country",
+        serviceLanguage: "Language",
+        email: "Email",
+        lodging: "Accommodation",
+        notes: "Notes"
+      }
+    };
 
-  function visibleRequiredValid(){
-    const current = document.querySelector(`.step[data-step="${currentStep}"]`);
-    const fields = [...current.querySelectorAll("[required]")].filter(el => el.offsetParent !== null);
-    for(const field of fields){
-      if(!field.checkValidity()){
-        field.reportValidity();
-        return false;
+    let language = "pt";
+    let currentStep = 1;
+
+    const totalSteps = 5;
+    const form = document.getElementById("reservationForm");
+    const steps = [...document.querySelectorAll(".step")];
+    const errorMessage = document.getElementById("errorMessage");
+    const nextButton = document.getElementById("nextButton");
+    const backButton = document.getElementById("backButton");
+
+    document.getElementById("date").min = new Date().toISOString().slice(0, 10);
+
+    function translatePage() {
+      const dictionary = translations[language];
+
+      document.documentElement.lang = language === "pt" ? "pt-BR" : language;
+
+      document.querySelectorAll("[data-translate]").forEach(element => {
+        const key = element.dataset.translate;
+
+        if (dictionary[key]) {
+          element.textContent = dictionary[key];
+        }
+      });
+
+      document.querySelectorAll("[data-placeholder]").forEach(element => {
+        const key = element.dataset.placeholder;
+
+        if (dictionary[key]) {
+          element.placeholder = dictionary[key];
+        }
+      });
+
+      updateProgress();
+
+      if (currentStep === 5) {
+        buildReview();
       }
     }
-    if(currentStep === 1 && !form.querySelector("[name=service]:checked")){
-      alert(translations[language].required);
-      return false;
+
+    document.querySelectorAll(".language-button").forEach(button => {
+      button.addEventListener("click", () => {
+        language = button.dataset.language;
+
+        document.querySelectorAll(".language-button").forEach(item => {
+          item.classList.toggle("active", item === button);
+        });
+
+        document.getElementById("serviceLanguage").value =
+          language === "pt" ? "Português" :
+          language === "es" ? "Español" :
+          "English";
+
+        translatePage();
+      });
+    });
+
+    function updateProgress() {
+      const percentage = currentStep * 20;
+      const dictionary = translations[language];
+
+      document.getElementById("progressBar").style.width = percentage + "%";
+      document.getElementById("progressPercentage").textContent = percentage + "%";
+      document.getElementById("progressLabel").textContent =
+        dictionary.step + " " + currentStep + " " + dictionary.of + " " + totalSteps;
+
+      backButton.hidden = currentStep === 1;
+      nextButton.textContent = currentStep === totalSteps
+        ? dictionary.send
+        : dictionary.continue;
     }
-    return true;
-  }
 
-  document.querySelectorAll("[data-next]").forEach(btn =>
-    btn.addEventListener("click", () => {
-      if(visibleRequiredValid()) showStep(Math.min(4,currentStep+1));
-    })
-  );
+    function showStep(stepNumber) {
+      currentStep = stepNumber;
 
-  document.querySelectorAll("[data-back]").forEach(btn =>
-    btn.addEventListener("click", () => showStep(Math.max(1,currentStep-1)))
-  );
+      steps.forEach(step => {
+        step.classList.toggle("active", Number(step.dataset.step) === currentStep);
+      });
 
-  document.querySelectorAll("[name=service]").forEach(radio =>
-    radio.addEventListener("change", updateConditional)
-  );
+      errorMessage.classList.remove("visible");
+      updateProgress();
 
-  function updateConditional(){
-    const value = form.querySelector("[name=service]:checked")?.id;
-    document.getElementById("certifiedFields").hidden = value !== "certified";
-    document.getElementById("beginnerFields").hidden = !["discovery","snorkel"].includes(value);
-    document.getElementById("quadFields").hidden = value !== "quad";
-    document.getElementById("courseFields").hidden = value !== "course";
-  }
+      if (currentStep === 5) {
+        buildReview();
+      }
 
-  const labels = {
-    service:"Experiência",date:"Data",people:"Participantes",certification:"Certificação",
-    dives:"Número de mergulhos",lastDive:"Último mergulho",swimming:"Sabe nadar",
-    health:"Saúde",drivers:"Condutores habilitados",children:"Idades das crianças",
-    courseType:"Curso",notes:"Observações",name:"Nome",phone:"WhatsApp",
-    country:"País",email:"E-mail",lodging:"Hospedagem"
-  };
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
 
-  function collectedData(){
-    const data = new FormData(form);
-    return [...data.entries()].filter(([key,value]) =>
-      key !== "service" || form.querySelector("[name=service]:checked")?.value === value
-    ).filter(([,value]) => String(value).trim());
-  }
+    function validateCurrentStep() {
+      const currentSection = document.querySelector(
+        '.step[data-step="' + currentStep + '"]'
+      );
 
-  function buildReview(){
-    const entries = collectedData();
-    document.getElementById("reviewBox").innerHTML = entries.map(([key,value]) =>
-      `<div><b>${labels[key] || key}:</b> ${escapeHtml(value)}</div>`
-    ).join("");
-  }
+      const requiredFields = [
+        ...currentSection.querySelectorAll("[required]")
+      ].filter(field => field.offsetParent !== null);
 
-  function escapeHtml(value){
-    return String(value).replace(/[&<>"']/g, char =>
-      ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char])
-    );
-  }
+      for (const field of requiredFields) {
+        if (!field.checkValidity()) {
+          errorMessage.textContent = translations[language].error;
+          errorMessage.classList.add("visible");
+          field.focus();
+          return false;
+        }
+      }
 
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-    if(!visibleRequiredValid()) return;
+      return true;
+    }
 
-    const lines = [
-      translations[language].request,
-      "",
-      ...collectedData().map(([key,value]) => `*${labels[key] || key}:* ${value}`),
-      "",
-      `*Idioma:* ${language.toUpperCase()}`
-    ];
+    function selectedService() {
+      return form.querySelector('[name="service"]:checked')?.value || "";
+    }
 
-    const url = "https://wa.me/5522996173348?text=" + encodeURIComponent(lines.join("\n"));
-    window.location.href = url;
-  });
+    function updateConditionalFields() {
+      const service = selectedService();
 
-  translate();
-</script>
+      document.querySelectorAll(".conditional").forEach(section => {
+        const acceptedServices = section.dataset.service.split(" ");
+        section.hidden = !acceptedServices.includes(service);
+      });
+    }
+
+    document.querySelectorAll('[name="service"]').forEach(field => {
+      field.addEventListener("change", updateConditionalFields);
+    });
+
+    backButton.addEventListener("click", () => {
+      showStep(currentStep - 1);
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (!validateCurrentStep()) {
+        return;
+      }
+
+      if (currentStep < totalSteps) {
+        showStep(currentStep + 1);
+      } else {
+        sendToWhatsApp();
+      }
+    });
+
+    function collectedEntries() {
+      const formData = new FormData(form);
+      const service = selectedService();
+      const entries = [];
+
+      for (const [key, value] of formData.entries()) {
+        if (!String(value).trim()) {
+          continue;
+        }
+
+        if (key === "service") {
+          entries.push([key, serviceNames[language][service]]);
+          continue;
+        }
+
+        const field = form.elements[key];
+        const conditionalParent = field?.closest(".conditional");
+
+        if (conditionalParent?.hidden) {
+          continue;
+        }
+
+        entries.push([key, value]);
+      }
+
+      return entries;
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function buildReview() {
+      const labels = reviewLabels[language];
+
+      document.getElementById("review").innerHTML = collectedEntries()
+        .filter(([key]) => key !== "notes")
+        .map(([key, value]) => {
+          return `
+            <div class="review-row">
+              <div class="review-key">${escapeHTML(labels[key] || key)}</div>
+              <div class="review-value">${escapeHTML(value)}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function sendToWhatsApp() {
+      const consent = document.getElementById("consent");
+
+      if (!consent.checked) {
+        errorMessage.textContent = translations[language].error;
+        errorMessage.classList.add("visible");
+        return;
+      }
+
+      const labels = reviewLabels[language];
+
+      const messageLines = [
+        translations[language].message,
+        "",
+        ...collectedEntries().map(([key, value]) => {
+          return "*" + (labels[key] || key) + ":* " + value;
+        }),
+        "",
+        "*Idioma:* " + language.toUpperCase()
+      ];
+
+      const whatsappURL =
+        "https://wa.me/5522996173348?text=" +
+        encodeURIComponent(messageLines.join("\n"));
+
+      window.location.href = whatsappURL;
+    }
+
+    translatePage();
+  </script>
 </body>
 </html>
